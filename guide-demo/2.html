@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+    </div>
+</body>
+<script>
+
+/* method 1 
+    const button = document.querySelector('.like-btn');
+    const buttonText = document.querySelector('.like-text');
+    let isLiked = false;
+    button.addEventListener('click',()=>{
+        isLiked = !isLiked;
+        if(isLiked){
+            buttonText.innerHTML = '取消';
+        }else{
+            buttonText.innerHTML = '点赞';
+        }
+    })
+ */
+
+ // 上面这样的写法你会发现，当同事要用你的代码的时候，你的同事需要把整个button和里面的结构复制过来，还有整个javascript
+ // 思考：如何实现结构复用？
+ // 1.我们先写一个类，这个类有一个render方法，这个方法里面可以直接返回一段HTML的结构
+ // 2.实现结构复用后我们发现，我们把按钮直接通过innerHTML插入到了div中，发现button在字符串中，我们根本没有办法添加事件，API中只有DOM结构才有时事件
+ // 3.因此我们需要把字符串的html放在一个外层的DOM元素中，因此需要一个函数把HTML字符串放在divDOM结构中
+ // 4.接着我们可以修改render函数，去调用这个createDOMString
+ // 5.设置一个事件去控制里面文字的修改
+ /* method 2 */
+
+const createDOMString = (domString)=>{
+    const div = document.createElement('div')
+    div.innerHTML = domString;
+    return div
+}
+
+class LikeButton {
+    constructor(){
+        this.state = { isLiked : false}
+    }
+    changeLikeText(){
+        const likeText = this.el.querySelector('.like-text')
+        this.state.isLiked = !this.state.isLiked
+        likeText.innerHTML = this.state.isLiked ? '取消':'点赞'
+    }
+    render(){
+        this.el = createDOMString(`
+            <button id='like-btn'>
+                <span class='like-text'>点赞</span>
+                <span>👍</span>
+            </button>
+        `
+        )
+        this.el.addEventListener('click',this.changeLikeText.bind(this),false)
+        return this.el
+    }
+}
+
+const wrapper = document.querySelector('.wrapper');
+const likeBtn1 = new LikeButton();
+
+wrapper.appendChild(likeBtn1.render());
+
+
+
+</script>
+</html>
