@@ -1,0 +1,19 @@
+.item{
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    margin: 2px;
+    color: rgb(147, 147, 221);
+    cursor: pointer;
+}
+.item.disabled{
+    color: #ccc;
+    background: #ddd;
+}
+.current{
+    font-size: 15px;
+}
+.active{
+    border: none;
+    color: #ccc;
+}
